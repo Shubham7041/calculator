@@ -1,14 +1,15 @@
-const button = document.querySelectorAll("button");
+const key = document.querySelector("#buttons");
 const display = document.querySelector("#display");
 const clear = document.getElementById("clear");
 const operator = document.querySelectorAll(".operator");
 const equal = document.querySelector("#equals");
 
-var displayValue = "";
-var firstargument = "";
+var displayValue = "0";
+var firstargument = 0;
 var Operator = "";
-var secondargument = "";
-
+var waitingforsecondargument = false;
+var secondargument = null;
+/*
 operator.forEach((operator) => {
   operator.addEventListener("click", (event) => {
     firstargument = displayValue;
@@ -18,27 +19,76 @@ operator.forEach((operator) => {
 
 button.forEach((button) => {
   button.addEventListener("click", (event) => {
-    display.textContent += event.target.textContent;
-    return (displayValue = display.textContent);
-  });
-  clear.addEventListener("click", () => {
-    display.textContent = "";
-  });
-  equal.addEventListener("click", () => {
-    secondArgument = displayValue;
+    inputdisplay.textContent += event.target.textContent;
+    return (displayValue = inputdisplay.textContent);
   });
 });
 
+clear.addEventListener("click", () => {
+  inputdisplay.textContent = "";
+  resultdisplay.textContent = "";
+});
+equal.addEventListener("click", () => {
+  secondargument = displayValue;
+});
+*/
+
+function updateDisplay() {
+  display.textContent = displayValue;
+}
+
+function inputdigit(digit) {
+  if (waitingforsecondargument === true) {
+    displayValue = digit;
+    waitingforsecondargument = false;
+  } else {
+    displayValue = displayValue === "0" ? digit : displayValue + digit;
+  }
+}
+
+key.addEventListener("click", (event) => {
+  const { target } = event;
+  if (!target.matches("button")) {
+    return;
+  }
+  if (target.classList.contains("operator")) {
+    handleOperator(target.value);
+    updateDisplay();
+  }
+  if (target.classList.contains("clear")) {
+    console.log("clear", target.value);
+    return;
+  }
+  inputdigit(target.value);
+  updateDisplay();
+});
+
+function handleOperator(nextOperator) {
+  const inputValue = parseInt(displayValue);
+  if ((firstargument = 0 && !isNaN(inputValue))) {
+    firstargument = inputValue;
+    console.log(firstargument);
+  } else if (Operator) {
+    const result = operate(Operator, firstargument, secondargument);
+    displayValue = String(result);
+    firstargument = result;
+  }
+  waitingforsecondargument = true;
+  Operator = nextOperator;
+  console.log(Operator, firstargument, displayValue);
+}
+
 const operate = function (operator, num1, num2) {
   if (operator == "+") {
-    return add(num1, num2);
+    return num1 + num2;
   } else if (operator == "-") {
-    return subtract(num1, num2);
+    return num1 - num2;
   } else if (operator == "/") {
-    return divide(num1, num2);
+    return num1 / num2;
   } else if (operator == "*") {
-    return multiply(num1, num2);
+    return num1 * num2;
   }
+  return secondargument;
 };
 
 const add = (num1, num2) => {
