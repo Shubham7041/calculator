@@ -22,7 +22,7 @@ function clearDisplay() {
 }
 
 function updateDisplay() {
-  inputDisplay.innerHTML += displayValue;
+  inputDisplay.innerHTML = displayValue;
 }
 
 //function inputDigit(digit) {
@@ -42,9 +42,9 @@ key.addEventListener("click", (event) => {
   const { target } = event;
   if (target.classList.contains("number")) {
     if (displayValue == "") {
-      displayValue += target.value;
-    } else {
       displayValue = target.value;
+    } else {
+      displayValue += target.value;
     }
     updateDisplay();
   }
@@ -56,9 +56,11 @@ operator.forEach((operator) => {
     if (target.value == "=") {
       if (waitingforsecondargument === true) {
         secondargument = Number(displayValue);
+        displayValue = "";
         waitingforsecondargument = false;
       }
       const result = operate(Operator, firstargument, secondargument);
+      inputDisplay.textContent = `${firstargument} ${Operator} ${secondargument}`;
       resultDisplay.textContent = result;
     }
     if (
@@ -82,15 +84,14 @@ clear.addEventListener("click", clearDisplay);
 
 const operate = function (operator, num1, num2) {
   if (operator == "+") {
-    return num1 + num2;
+    return add(num1, num2);
   } else if (operator == "-") {
-    return num1 - num2;
+    return subtract(num1, num2);
   } else if (operator == "/") {
-    return num1 / num2;
+    return divide(num1, num2);
   } else if (operator == "*") {
-    return num1 * num2;
+    return multiply(num1, num2);
   }
-  return num2;
 };
 
 const add = (num1, num2) => {
@@ -102,6 +103,9 @@ const subtract = function (num1, num2) {
 };
 
 const divide = function (num1, num2) {
+  if (num2 == 0) {
+    alert("Can't divide with 0");
+  }
   return num1 / num2;
 };
 
