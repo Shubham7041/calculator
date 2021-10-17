@@ -26,8 +26,11 @@ body {
   width: 400px;
   border: 3px groove #ff3d55;
   border-radius: 5%;
-  background-color: rgb(16 157 106);
+  background: linear-gradient(0deg, #3e0061, transparent);
   box-shadow: 5px 5px;
+}
+#operator button {
+  background-color: rgb(75, 192, 221);
 }
 #display {
   display: flex;

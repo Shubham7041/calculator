@@ -70,6 +70,7 @@ operator.forEach((operator) => {
       target.value == "*"
     ) {
       if (waitingforsecondargument == true) {
+        Operator = target.value;
         secondargument = Number(displayValue);
         displayValue = "";
         firstargument = operate(Operator, firstargument, secondargument);
