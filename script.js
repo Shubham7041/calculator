@@ -69,6 +69,12 @@ operator.forEach((operator) => {
       target.value == "/" ||
       target.value == "*"
     ) {
+      if (waitingforsecondargument == true) {
+        secondargument = Number(displayValue);
+        displayValue = "";
+        firstargument = operate(Operator, firstargument, secondargument);
+        resultDisplay.textContent = `${firstargument}`;
+      }
       if (firstargument == 0 && Operator == "") {
         Operator = target.value;
         firstargument = Number(displayValue);
